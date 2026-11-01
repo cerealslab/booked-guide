@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The No-Show Recovery Agent: Free BOOKED Guide</title>
+<meta name="description" content="Free 5-minute manual: turn cancelled appointments into paid refills with a Calendar + n8n + Claude + Twilio agent. Copy-paste prompts, a revenue calculator and a 7-day checklist.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://cerealslab.github.io/booked-guide/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The No-Show Recovery Agent: Free BOOKED Guide">
+<meta property="og:description" content="Free 5-minute manual + copy-paste prompts: an AI agent that texts an opted-in waitlist when a slot cancels. Twilio + n8n + Claude. Costs are estimates.">
+<meta property="og:url" content="https://cerealslab.github.io/booked-guide/">
+<meta property="og:image" content="https://cerealslab.github.io/booked-guide/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The No-Show Recovery Agent: Cancel, Waitlist, Approve, Text, YES, Filled">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The No-Show Recovery Agent: Free BOOKED Guide">
+<meta name="twitter:description" content="Free 5-minute manual + copy-paste prompts: an AI agent that texts an opted-in waitlist when a slot cancels. Twilio + n8n + Claude. Costs are estimates.">
+<meta name="twitter:image" content="https://cerealslab.github.io/booked-guide/og-image.png">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230B1020'/%3E%3Cpath d='M30 52l15 15 25-32' stroke='%23FFD60A' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="topbar__row">
+    <a class="brand" href="#top">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10l4 4 8-9"/></svg>
+      </span>
+      <span class="brand__name">BOOKED</span>
+    </a>
+    <nav class="chip-nav" aria-label="Guide sections">
+      <ul id="chipNav">
+        <li><a href="#glance" data-nav="glance">Glance</a></li>
+        <li><a href="#manual" data-nav="manual">Manual</a></li>
+        <li><a href="#prompts" data-nav="prompts">Prompts</a></li>
+        <li><a href="#money" data-nav="money">Money</a></li>
+        <li><a href="#details" data-nav="details">Details</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="reading-progress" aria-hidden="true"><div class="reading-progress__bar" id="readingProgressBar"></div></div>
+</header>
+
+<div id="liveRegion" class="sr-only" role="status" aria-live="polite"></div>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero__inner">
+      <div class="hero__text">
+        <h1 class="hero__title">The No-Show Recovery Agent</h1>
+        <p class="hero__subtitle">A 5-minute manual + copy-paste prompts to refill cancelled slots.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#step-1">Start step 1</a>
+        </div>
+        <p class="hero__disclaimer">Figures are estimates, not income promises. Not legal advice.</p>
+      </div>
+      <div class="hero__media">
+        <div class="device-mock" role="img" aria-label="Demo: a 2:00 pm slot at Example Salon is cancelled, the waitlist gets a text, Sam replies YES, and the slot is filled.">
+          <div class="device-mock__cal" aria-hidden="true">
+            <p class="device-mock__day">Tue</p>
+            <ul class="device-mock__rows">
+              <li class="device-mock__row">
+                <span class="device-mock__time">1:00 pm</span>
+                <span class="device-mock__name">Jess</span>
+              </li>
+              <li class="device-mock__row device-mock__row--slot">
+                <span class="device-mock__time">2:00 pm</span>
+                <span class="device-mock__status">
+                  <span class="device-mock__status-text device-mock__status-text--cancelled">Cancelled</span>
+                  <span class="device-mock__status-text device-mock__status-text--filled">Filled: Sam</span>
+                </span>
+              </li>
+              <li class="device-mock__row">
+                <span class="device-mock__time">3:00 pm</span>
+                <span class="device-mock__name">Lee</span>
+              </li>
+            </ul>
+          </div>
+          <div class="device-mock__sms" aria-hidden="true">
+            <p class="device-mock__bubble device-mock__bubble--out">Hi Sam, a 2pm slot just opened today at Example Salon. Reply YES to book or NO to pass.</p>
+            <p class="device-mock__bubble device-mock__bubble--in">YES</p>
+          </div>
+          <p class="device-mock__chip" aria-hidden="true">Slot filled</p>
+        </div>
+      </div>
+      <div class="hero__glance" id="glance" aria-labelledby="glance-h">
+        <h2 id="glance-h" class="section__title">At a glance</h2>
+        <div class="glance-grid">
+          <div class="glance-card">
+            <p class="glance-card__label">What it is</p>
+            <p class="glance-card__head">Texts your waitlist</p>
+            <p class="glance-card__line">Offers the open slot by text.</p>
+          </div>
+          <div class="glance-card">
+            <p class="glance-card__label">Who pays</p>
+            <p class="glance-card__head">The business pays</p>
+            <p class="glance-card__line">Salons, spas, clinics and gyms.</p>
+          </div>
+          <div class="glance-card">
+            <p class="glance-card__label">Setup vs. charge</p>
+            <p class="glance-card__head">$56&ndash;67 setup &rarr; $40 per filled slot (example) <span class="badge-estimate">ESTIMATE</span></p>
+            <p class="glance-card__line">Example: 20 fills a month = $800.</p>
+          </div>
+          <div class="glance-card">
+            <p class="glance-card__label">Time to launch</p>
+            <p class="glance-card__head">7 days</p>
+            <p class="glance-card__line">Follow the checklist.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANUAL -->
+  <section class="section" id="manual" aria-labelledby="manual-h">
+    <div class="section__head">
+      <h2 id="manual-h" class="section__title">The manual</h2>
+      <div class="steps-progress">
+        <div class="steps-progress__track">
+          <div class="steps-progress__fill" id="stepsProgressFill"></div>
+        </div>
+        <span class="steps-progress__label" id="stepsProgressLabel">0/8 done</span>
+        <button type="button" class="btn btn--ghost btn--small" id="stepsReset">Reset</button>
+      </div>
+    </div>
+
+    <ol class="steps-list" id="stepsList" data-storage-key="booked-v3-manual">
+      <li class="step" id="step-1">
+        <label class="step__row">
+          <input type="checkbox" data-id="step1">
+          <span class="step__num" aria-hidden="true">1</span>
+          <span class="step__action">Pick a niche where slots are valuable and compliance is light.</span>
+        </label>
+        <details class="step__details">
+          <summary>Specifics</summary>
+          <p><strong>Check their booking tool first.</strong> Some already auto-text the waitlist (Vagaro's waitlist modes, Weave's Waitlist for dental). If they use it, skip them or offer to set it up and run it. Your best prospects book in Google Calendar, a basic tool, or by phone.</p>
+          <p><strong>Recommendation:</strong> run your first two pilots with salons or med-spas to learn the workflow with light compliance.</p>
+          <p>Move to dental or physio once you have a HIPAA-ready setup. See <a href="#niche-details">niche comparison</a> and <a href="#compliance-details">compliance checklist</a> in Details.</p>
+        </details>
+      </li>
+
+      <li class="step">
+        <label class="step__row">
+          <input type="checkbox" data-id="step2">
+          <span class="step__num" aria-hidden="true">2</span>
+          <span class="step__action">Set up the waitlist sheet.</span>
+        </label>
+        <details class="step__details">
+          <summary>Specifics</summary>
+          <p>A Google Sheet with two tabs: <strong>Waitlist</strong> and <strong>Refills</strong>.</p>
+          <p>Waitlist columns:</p>
+          <code class="inline-code-block">first_name | phone_e164 | preferred_days | preferred_times | max_notice_minutes | opted_in_at | opt_in_source | status (active/paused/STOP) | last_offered_at</code>
+          <p>Only rows with <code>opted_in_at</code> filled and <code>status = active</code> may ever be texted.</p>
+          <p>Refills columns: date, chair, slot time, duration, filled_by_first_name, minutes_to_fill, fee.</p>
+        </details>
+      </li>
+
+      <li class="step">
+        <label class="step__row">
+          <input type="checkbox" data-id="step3">
+          <span class="step__num" aria-hidden="true">3</span>
+          <span class="step__action">Build the n8n workflow: Calendar to Claude to Twilio.</span>
+        </label>
+        <details class="step__details">
+          <summary>Specifics</summary>
+          <ol class="flow-line" aria-label="Workflow at a glance">
+            <li class="flow-line__item">Cancel</li>
+            <li class="flow-line__item">Waitlist sheet</li>
+            <li class="flow-line__item">Claude drafts</li>
+            <li class="flow-line__item">Staff approves</li>
+            <li class="flow-line__item">Twilio texts</li>
+          </ol>
+          <ol class="bullet-list bullet-list--numbered">
+            <li><strong>Trigger:</strong> Google Calendar "Event Cancelled" node, or a Webhook from the booking tool. Capture chair/provider, start, end, duration. Do not store treatment details.</li>
+            <li><strong>Function "Is this refillable?":</strong> skip if it starts in under 60 minutes, is outside business hours, or was already handled (dedupe on event ID).</li>
+            <li><strong>Read Waitlist:</strong> filter status = active, an opt-in present, and last_offered_at more than 24 hours ago.</li>
+            <li><strong>Pre-score candidates</strong> on day/time match and notice window. Keep the top 5.</li>
+            <li><strong>Claude: rank and draft</strong> using the prompt in Copy-paste prompts. Output is JSON.</li>
+            <li><strong>Approval:</strong> Slack "Send and wait for approval" or an email with Approve/Skip links. A human approves every send.</li>
+            <li><strong>Twilio: send SMS</strong> to the top 3, staggered 60 to 90 seconds apart. Write last_offered_at back to the sheet.</li>
+            <li><strong>Inbound webhook:</strong> YES and still open locks the slot and confirms. YES and already filled sends the "already filled" text. STOP sets status to STOP. Anything else goes to the front desk.</li>
+            <li><strong>Notify the others:</strong> "Slot filled, thanks!" to anyone offered who hasn't replied.</li>
+            <li><strong>Log a row</strong> in Refills: date, chair, slot time, duration, filled_by_first_name, minutes_to_fill, fee.</li>
+            <li><strong>Monthly:</strong> a scheduled workflow sums the month's Refills, drafts a Stripe invoice and emails a one-page report.</li>
+          </ol>
+          <p>Full diagram: see <a href="#architecture-details">Architecture</a> in Details.</p>
+        </details>
+      </li>
+
+      <li class="step">
+        <label class="step__row">
+          <input type="checkbox" data-id="step4">
+          <span class="step__num" aria-hidden="true">4</span>
+          <span class="step__action">Add the Claude prompt and validate its JSON.</span>
+        </label>
+        <details class="step__details">
+          <summary>Specifics</summary>
+          <p>The prompt picks the 3 best candidates and drafts a short, PHI-free SMS for each, returned as JSON.</p>
+          <p>Validate the JSON in a Code node before anything reaches the approval step. If it fails to parse, fall back to the slot-open template.</p>
+          <p>The full prompt is in <a href="#prompts">Copy-paste prompts</a> below.</p>
+        </details>
+      </li>
+
+      <li class="step">
+        <label class="step__row">
+          <input type="checkbox" data-id="step5">
+          <span class="step__num" aria-hidden="true">5</span>
+          <span class="step__action">Connect Twilio and check the compliance list.</span>
+        </label>
+        <details class="step__details">
+          <summary>Specifics</summary>
+          <ul class="bullet-list">
+            <li>Open a Twilio account, buy a local number, and register the business as an A2P 10DLC brand plus one campaign. Approval can take up to about a week.</li>
+            <li>Twilio handles STOP and HELP automatically. Mirror STOP in your sheet too.</li>
+            <li>Send only during business hours in the recipient's local time, at most one offer text per person per day.</li>
+          </ul>
+          <p>Full checklist: see <a href="#compliance-details">Compliance</a> in Details before you send a single text.</p>
+        </details>
+      </li>
+
+      <li class="step">
+        <label class="step__row">
+          <input type="checkbox" data-id="step6">
+          <span class="step__num" aria-hidden="true">6</span>
+          <span class="step__action">Test it on your own phone before anyone else sees it.</span>
+        </label>
+        <details class="step__details">
+          <summary>Specifics</summary>
+          <ul class="bullet-list">
+            <li>Build the workflow against a test calendar and a test sheet. Use your own phone as the "patient".</li>
+            <li>Add the Claude ranking step, the approval step and the inbound YES/STOP handling.</li>
+            <li>Test a double-YES race: two people reply YES at once, only the first should lock the slot.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li class="step">
+        <label class="step__row">
+          <input type="checkbox" data-id="step7">
+          <span class="step__num" aria-hidden="true">7</span>
+          <span class="step__action">List 20 businesses, then send the cold email or walk in.</span>
+        </label>
+        <details class="step__details">
+          <summary>Specifics</summary>
+          <ul class="bullet-list">
+            <li>Search Google Maps for "dentist", "hair salon" or "med spa" plus your city. Keep businesses with 4.5+ stars, 100+ reviews and online booking.</li>
+            <li>Note the booking tool behind their "Book" link. Skip anyone whose tool already texts the waitlist automatically (see step 1).</li>
+            <li>Use the cold email, walk-in script and pilot offer in <a href="#prompts">Copy-paste prompts</a> below.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li class="step">
+        <label class="step__row">
+          <input type="checkbox" data-id="step8">
+          <span class="step__num" aria-hidden="true">8</span>
+          <span class="step__action">Run a free 14-day pilot, then bill per refill.</span>
+        </label>
+        <details class="step__details">
+          <summary>Specifics</summary>
+          <p>What you set up: waitlist opt-in (a QR code at the front desk plus a link), cancellation detection, the approval button, texts and a weekly report.</p>
+          <p>What the owner does: approve texts, and tell waitlist patients or clients about the opt-in.</p>
+          <p>Cost during the pilot: $0. After the pilot: a fee per refilled slot, cancel anytime.</p>
+          <p>Success metric: refilled slots and minutes to fill, reported every Friday.</p>
+          <p>After 2 to 3 happy pilots, turn them into case studies using real numbers only, then raise the setup fee and move to the next niche.</p>
+        </details>
+      </li>
+    </ol>
+  </section>
+
+  <!-- PROMPTS -->
+  <section class="section" id="prompts" aria-labelledby="prompts-h">
+    <h2 id="prompts-h" class="section__title">Copy-paste prompts &amp; texts</h2>
+    <p class="section__lede">Every card below copies in full, even the ones shown clipped.</p>
+
+    <div class="prompt-grid">
+      <div class="prompt-card prompt-card--featured">
+        <h3>Claude prompt (ranking + drafting)</h3>
+        <p class="prompt-card__note">Picks the top 3 waitlist candidates and drafts a short SMS for each, as JSON.</p>
+        <div class="copy-block">
+          <pre class="copy-source">You are a scheduling assistant for {business_name}. A {duration}-minute slot opened
+on {day} at {time}. Here are up to 5 waitlist candidates who have opted in to texts:
+{candidates_json}   // first_name, preferred_days, preferred_times, max_notice_minutes
+
+Rules:
+- Pick the 3 best matches by day/time preference and notice window. Never invent people.
+- Write ONE SMS under 160 characters per person, friendly and plain.
+- Mention only the business name, day, time and duration. NO health, treatment,
+  service type, price or personal details.
+- End with: "Reply YES to book or NO to pass. Reply STOP to opt out."
+Return JSON: {"picks":[{"first_name":"","phone_ref":"","reason":"","sms":""}]}</pre>
+          <div class="copy-block__actions">
+            <button type="button" class="copy-btn" data-copy-label="Claude ranking prompt">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <h3>1. Slot open (offer)</h3>
+        <div class="copy-block">
+          <pre class="copy-source">Hi {first}, a {duration}-min spot just opened at {business} today at {time}. Want it? Reply YES to book or NO to pass. Reply STOP to opt out.</pre>
+          <button type="button" class="copy-btn" data-copy-label="Slot open template">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <h3>2. Confirmed</h3>
+        <div class="copy-block">
+          <pre class="copy-source">You're booked at {business} for {day} {time}. See you then! Need to change it? Call {phone}.</pre>
+          <button type="button" class="copy-btn" data-copy-label="Confirmed template">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <h3>3. Already filled</h3>
+        <div class="copy-block">
+          <pre class="copy-source">Thanks {first}! That {time} spot was just taken. We'll text you the next one that fits. Reply STOP to opt out.</pre>
+          <button type="button" class="copy-btn" data-copy-label="Already filled template">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <h3>4. Waitlist opt-in <span class="muted">(send once)</span></h3>
+        <div class="copy-block">
+          <pre class="copy-source">{business}: You're on our waitlist. We'll text when an earlier spot opens (max 1 text/day). Msg &amp; data rates may apply. Reply HELP for help, STOP to opt out.</pre>
+          <button type="button" class="copy-btn" data-copy-label="Opt-in confirmation template">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <h3>5. STOP confirmation <span class="muted">(Twilio sends this automatically)</span></h3>
+        <div class="copy-block">
+          <pre class="copy-source">You're unsubscribed from {business} waitlist texts. No more messages will be sent.</pre>
+          <button type="button" class="copy-btn" data-copy-label="STOP confirmation template">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <h3>Cold email / DM</h3>
+        <div class="copy-block is-clippable">
+          <pre class="copy-source">Subject: Filling your last-minute cancellations
+
+Hi {name}, I build a small tool that texts your opt-in waitlist the moment a slot is cancelled. Your front desk taps "approve", the first "YES" gets the chair, and it's logged automatically.
+
+I'm offering a free 14-day pilot to 3 {city} businesses. You only pay if it refills a slot after the pilot ({price} per refill). Worth a 10-minute call this week?
+
+{your name} &middot; {phone}</pre>
+          <div class="copy-block__actions">
+            <button type="button" class="show-all-btn">Show all</button>
+            <button type="button" class="copy-btn" data-copy-label="Cold email">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <h3>Walk-in / phone script</h3>
+        <div class="copy-block">
+          <pre class="copy-source">"Quick question: when someone cancels same-day, what happens to that slot? Most places call down a list by hand. I set up a text system that offers the slot to your opted-in waitlist in about a minute, and your team approves every message. Can I show you a 2-minute demo on my phone?"</pre>
+          <button type="button" class="copy-btn" data-copy-label="Phone script">Copy</button>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <h3>14-day pilot offer</h3>
+        <div class="copy-block is-clippable">
+          <pre class="copy-source">What I set up: waitlist opt-in (a QR code at the front desk plus a link), cancellation detection, approval button, texts and a weekly report.
+What you do: approve texts, and tell waitlist patients/clients about the opt-in.
+Cost during the pilot: $0. After the pilot: {price} per refilled slot, cancel anytime.
+Success metric: refilled slots and minutes to fill, reported every Friday.</pre>
+          <div class="copy-block__actions">
+            <button type="button" class="show-all-btn">Show all</button>
+            <button type="button" class="copy-btn" data-copy-label="Pilot offer">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <h3>Weekly report header</h3>
+        <div class="copy-block">
+          <pre class="copy-source">Week | Cancellations detected | Offers sent | Slots refilled | Fill rate | Avg minutes to fill | Est. value recovered (ESTIMATE) | Fees due</pre>
+          <button type="button" class="copy-btn" data-copy-label="Weekly report header">Copy</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MONEY -->
+  <section class="section" id="money" aria-labelledby="money-h">
+    <h2 id="money-h" class="section__title">Money <span class="badge-estimate">ESTIMATE</span></h2>
+
+    <div class="money-flow">
+      <div class="money-flow__top">
+        <div class="flow-card flow-card--business">Business</div>
+        <div class="flow-arrow">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>pays you $40 per refilled slot <span class="muted">(example)</span></span>
+        </div>
+        <div class="flow-card flow-card--you">You</div>
+      </div>
+      <div class="money-flow__down" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>you pay</span>
+      </div>
+      <div class="money-flow__vendors">
+        <div class="flow-card flow-card--vendor">Twilio <span>SMS</span></div>
+        <div class="flow-card flow-card--vendor">Claude <span>AI drafting</span></div>
+        <div class="flow-card flow-card--vendor">n8n <span>hosting</span></div>
+      </div>
+      <div class="money-flow__stats">
+        <p class="money-flow__stat">20 fills &times; $40 = $800/month per business <span class="muted">(example)</span> <span class="badge-estimate">ESTIMATE</span></p>
+        <p class="money-flow__stat">Running cost &approx; $0.10 to $0.25 SMS per refill</p>
+        <p class="money-flow__stat money-flow__stat--full">Setup &approx; $56 to $67 first month, then $32 to $43/month <span class="badge-estimate">ESTIMATE</span></p>
+      </div>
+      <p class="money-flow__note">Meanwhile the waitlist customer gets the slot the business would have lost.</p>
+    </div>
+
+    <div class="card calculator-card">
+      <h3>Revenue calculator</h3>
+      <p class="muted">Defaults are example values. Change them for your own numbers.</p>
+      <form class="calculator" id="calculatorForm">
+        <div class="calculator__grid">
+          <div class="field">
+            <label for="calcClients">Clients <span class="muted">(example value)</span></label>
+            <input type="number" id="calcClients" min="0" step="1" value="3" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="calcRefills">Refills / client / month <span class="muted">(example value)</span></label>
+            <input type="number" id="calcRefills" min="0" step="1" value="20" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="calcFee">Fee per refill ($) <span class="muted">(example value)</span></label>
+            <input type="number" id="calcFee" min="0" step="1" value="40" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label for="calcMonthlyFee">Monthly fee / client ($) <span class="muted">(example value)</span></label>
+            <input type="number" id="calcMonthlyFee" min="0" step="1" value="0" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label for="calcRunningCost">Running cost / refill ($) <span class="muted">(example value)</span></label>
+            <input type="number" id="calcRunningCost" min="0" step="0.01" value="0.20" inputmode="decimal">
+          </div>
+        </div>
+        <div class="calculator__results" aria-live="polite">
+          <div class="result-card">
+            <span class="result-card__label">Monthly</span>
+            <span class="result-card__value" id="calcMonthlyOut">$0</span>
+          </div>
+          <div class="result-card">
+            <span class="result-card__label">Yearly</span>
+            <span class="result-card__value" id="calcYearlyOut">$0</span>
+          </div>
+        </div>
+        <p class="calc-disclaimer"><span class="badge-estimate badge-estimate--muted">ESTIMATE</span>, not an income promise. Based on the numbers you enter above.</p>
+      </form>
+    </div>
+
+    <details class="collapsible" id="setup-cost-details">
+      <summary>Setup cost: first month, 1 client</summary>
+      <p class="muted">What it costs to launch for one business. Prices checked Nov 1, 2026.</p>
+      <div class="table-wrap" role="region" aria-label="Setup cost table" tabindex="0">
+        <table class="data-table">
+          <thead>
+            <tr><th scope="col">Item</th><th scope="col">First month</th><th scope="col">Each month after</th><th scope="col">Source</th></tr>
+          </thead>
+          <tbody>
+            <tr><td data-label="Item">Twilio local number</td><td data-label="First month">$1.15</td><td data-label="Each month after">$1.15</td><td data-label="Source">&#8308;</td></tr>
+            <tr><td data-label="Item">A2P 10DLC brand registration <span class="muted">(the business's brand, low-volume standard)</span></td><td data-label="First month">$4.50 one-time</td><td data-label="Each month after">none</td><td data-label="Source">&#8309;</td></tr>
+            <tr><td data-label="Item">A2P 10DLC campaign vetting</td><td data-label="First month">$15 one-time</td><td data-label="Each month after">none</td><td data-label="Source">&#8309;</td></tr>
+            <tr><td data-label="Item">A2P 10DLC campaign fee</td><td data-label="First month">$1.50 (low-volume mixed) to $10 (standard use case)</td><td data-label="Each month after">same</td><td data-label="Source">&#8309;</td></tr>
+            <tr><td data-label="Item">SMS for 20 refills</td><td data-label="First month">$2 to $5 <span class="nowrap badge-estimate badge-estimate--muted">ESTIMATE</span></td><td data-label="Each month after">same</td><td data-label="Source">&#8308;</td></tr>
+            <tr><td data-label="Item">n8n Cloud Starter</td><td data-label="First month">&approx; &euro;24 (about $27) billed monthly</td><td data-label="Each month after">same</td><td data-label="Source"><span class="nowrap">&#8311; &#185;&#185; &#185;&#178;</span></td></tr>
+            <tr><td data-label="Item">Claude API</td><td data-label="First month">$5 prepaid credit</td><td data-label="Each month after">&approx; $0.20 usage <span class="nowrap badge-estimate badge-estimate--muted">ESTIMATE</span></td><td data-label="Source">&#8310;</td></tr>
+            <tr><td data-label="Item">Google Sheets + the business's calendar</td><td data-label="First month">$0</td><td data-label="Each month after">$0</td><td data-label="Source"></td></tr>
+            <tr>
+              <td data-label="Item"><strong>Total</strong></td>
+              <td data-label="First month"><strong>&approx; $56 to $67</strong> <span class="nowrap badge-estimate badge-estimate--muted">ESTIMATE</span></td>
+              <td data-label="Each month after"><strong>&approx; $32 to $43</strong> <span class="nowrap badge-estimate badge-estimate--muted">ESTIMATE</span></td>
+              <td data-label="Source"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">Register the business as the brand: it has a tax ID (EIN), so the $2 sole-proprietor route usually doesn't apply. Each new client means its own brand and campaign fees. Twilio's 10DLC product page still lists $4 / $44 brand fees; its brand-registration docs list $4.50, plus $41.50 vetting for a full Standard brand.</p>
+      <p class="muted">SMS for 20 refills: 20 &times; $0.10 to $0.25 per refill, from the guide's example math&#8308;.</p>
+      <p class="muted">n8n Cloud Starter: or &euro;20/mo billed annually (&euro;240 up front). Or $0 for the self-hosted Community Edition plus your own server.</p>
+      <p class="muted">Claude API: credits are prepaid. About 30 short calls a month on Sonnet 5.5 at $2 in / $10 out per million tokens. Haiku 5.5 is cheaper if you want to cut it further.</p>
+      <p>Under $100 to launch if you pay n8n monthly. Paying n8n yearly up front puts month one above $100.</p>
+      <p>One n8n plan can run workflows for several clients, so the per-client cost drops as you add businesses.</p>
+      <p class="muted"><em>Prices change. Check each page before you buy.</em></p>
+    </details>
+
+    <details class="collapsible">
+      <summary>Example math and pricing options</summary>
+      <h4>Example math <span class="badge-estimate badge-estimate--muted">ESTIMATE</span>, not an income promise</h4>
+      <div class="table-wrap" role="region" aria-label="Example math table" tabindex="0">
+        <table class="data-table">
+          <thead>
+            <tr><th scope="col">Line</th><th scope="col">Example</th><th scope="col">Note</th></tr>
+          </thead>
+          <tbody>
+            <tr><td data-label="Line">Your fee per refilled slot</td><td data-label="Example"><strong>$40</strong></td><td data-label="Note">Example price. Test $25 to $60 for your niche</td></tr>
+            <tr><td data-label="Line">Refills per business per month</td><td data-label="Example"><strong>20</strong></td><td data-label="Note">Depends on cancellations and waitlist size</td></tr>
+            <tr><td data-label="Line"><strong>Your revenue per business</strong></td><td data-label="Example"><strong>20 &times; $40 = $800/month</strong></td><td data-label="Note"><span class="badge-estimate badge-estimate--muted">ESTIMATE</span></td></tr>
+            <tr><td data-label="Line">SMS cost per refill</td><td data-label="Example"><strong>&approx; $0.10 to $0.25</strong></td><td data-label="Note">3 offer texts + replies + confirmations, 8 to 12 segments&#8308;</td></tr>
+            <tr><td data-label="Line">Phone number</td><td data-label="Example">$1.15/month (long code)&#8308;</td><td data-label="Note">Plus A2P 10DLC registration fees&#8309;</td></tr>
+            <tr><td data-label="Line">AI drafting (Claude)</td><td data-label="Example">A few cents per refill or less <span class="badge-estimate badge-estimate--muted">ESTIMATE</span></td><td data-label="Note">Short prompts. Check current API pricing&#8310;</td></tr>
+            <tr><td data-label="Line">n8n</td><td data-label="Example">Free self-hosted, or a paid Cloud plan</td><td data-label="Note">Check current pricing&#8311;</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>What the business gets</strong> <span class="nowrap"><span class="badge-estimate badge-estimate--muted">ESTIMATE</span>:</span> a refilled dental slot recovers $250 to $450 of production&#185;, so a $40 fee is roughly 9 to 16% of that. For a $90 salon slot it's about 44%, so price lower for salons.</p>
+      <p class="callout callout--subtle"><strong>Sanity check before you pitch:</strong> ask the owner three numbers: cancellations per week, average slot value, and current waitlist size. Under 3 cancellations a week, the agent won't earn enough for either of you.</p>
+      <p><strong>Price check:</strong> off-the-shelf no-show tools sell for about $150/month (for example NoShowLine's plan). If you charge per fill, stay cheaper than that in quiet months, or cap the monthly bill.</p>
+
+      <h4>Pricing options</h4>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h5>Pay-per-refill</h5>
+          <p class="pricing-card__example">$40 per filled slot (dental); $10 to $20 (salons)</p>
+          <p><strong>Best for:</strong> first pilots. Zero risk for the owner.</p>
+          <p class="pricing-card__watch"><strong>Watch out for:</strong> needs clean logging so both sides trust the count.</p>
+        </div>
+        <div class="pricing-card">
+          <h5>Flat monthly</h5>
+          <p class="pricing-card__example">$199 to $399/month</p>
+          <p><strong>Best for:</strong> owners who want predictable bills.</p>
+          <p class="pricing-card__watch"><strong>Watch out for:</strong> you carry the risk of quiet months.</p>
+        </div>
+        <div class="pricing-card">
+          <h5>Hybrid</h5>
+          <p class="pricing-card__example">$99/month + $20 per refill, capped</p>
+          <p><strong>Best for:</strong> scaling past 5 clients.</p>
+          <p class="pricing-card__watch"><strong>Watch out for:</strong> explain the cap clearly.</p>
+        </div>
+        <div class="pricing-card">
+          <h5>Setup fee</h5>
+          <p class="pricing-card__example">$0 during the pilot; $250 to $500 after</p>
+          <p><strong>Best for:</strong> covers onboarding time.</p>
+          <p class="pricing-card__watch"><strong>Watch out for:</strong> waive it for your first 3 clients to get case studies.</p>
+        </div>
+      </div>
+      <p class="muted"><em>All prices are examples <span class="badge-estimate badge-estimate--muted">ESTIMATE</span>. A pay-per-refill fee should stay well under the slot's value to the business.</em></p>
+    </details>
+  </section>
+
+  <!-- DETAILS -->
+  <section class="section" id="details" aria-labelledby="details-h">
+    <h2 id="details-h" class="section__title">Details</h2>
+
+    <details class="collapsible" id="niche-details">
+      <summary>Pick your niche</summary>
+      <p>Start where the value per slot is high, scheduling is dense, and compliance is light. Then move up.</p>
+      <div class="niche-grid">
+        <div class="niche-card niche-card--start">
+          <h4>Hair / nail / brow salons</h4>
+          <p><strong>Slot value <span class="nowrap"><span class="badge-estimate">ESTIMATE</span>:</span></strong> $40 to $150</p>
+          <p><strong>Waitlist demand:</strong> High on weekends</p>
+          <p><strong>Compliance:</strong> Low (TCPA/SMS only)</p>
+          <p class="niche-card__tag">Best first niche</p>
+        </div>
+        <div class="niche-card niche-card--start">
+          <h4>Med-spa / aesthetics</h4>
+          <p><strong>Slot value <span class="nowrap"><span class="badge-estimate badge-estimate--muted">ESTIMATE</span>:</span></strong> $150 to $600</p>
+          <p><strong>Waitlist demand:</strong> Medium to high</p>
+          <p><strong>Compliance:</strong> Medium (health-adjacent, be careful)</p>
+          <p class="niche-card__tag">Good second</p>
+        </div>
+        <div class="niche-card niche-card--caution">
+          <h4>Physio / chiro / massage</h4>
+          <p><strong>Slot value <span class="nowrap"><span class="badge-estimate badge-estimate--muted">ESTIMATE</span>:</span></strong> $70 to $150</p>
+          <p><strong>Waitlist demand:</strong> Medium</p>
+          <p><strong>Compliance:</strong> Higher, often HIPAA-covered</p>
+          <p class="niche-card__tag">After you have a BAA-ready stack</p>
+        </div>
+        <div class="niche-card niche-card--caution">
+          <h4>Dental offices</h4>
+          <p><strong>Slot value <span class="nowrap"><span class="badge-estimate badge-estimate--muted">ESTIMATE</span>:</span></strong> $250 to $450 lost per no-show&#185;</p>
+          <p><strong>Waitlist demand:</strong> High, some patients wait months</p>
+          <p><strong>Compliance:</strong> Highest, HIPAA covered entities</p>
+          <p class="niche-card__tag">Advanced. Read Compliance below</p>
+        </div>
+        <div class="niche-card niche-card--start">
+          <h4>Gyms / PT studios / tutoring</h4>
+          <p><strong>Slot value <span class="nowrap"><span class="badge-estimate badge-estimate--muted">ESTIMATE</span>:</span></strong> $30 to $100</p>
+          <p><strong>Waitlist demand:</strong> Medium</p>
+          <p><strong>Compliance:</strong> Low</p>
+          <p class="niche-card__tag">Easy pilots</p>
+        </div>
+      </div>
+      <p>A widely shared post on X joked that a dentist's next opening was a year away. Industry sources put dental no-show rates at roughly 10 to 20% of appointments&#185;. Dental Economics estimates one no-show a day can cost a practice $20,000 to $70,000 a year&#178;. A university dental clinic study found about 9% of 58,622 appointments were missed without notice&#179;.</p>
+    </details>
+
+    <details class="collapsible">
+      <summary>Tool stack</summary>
+      <p>Five accounts run the whole thing. Nothing here is exotic. It's the plumbing.</p>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h4>Calendar</h4>
+          <p class="tool-card__role">Detects the cancellation</p>
+          <p>Google Workspace calendar per chair/provider, or the booking tool's API/webhooks (Square, Vagaro, Boulevard).</p>
+          <p class="tool-card__cost">Cost: usually already owned by the business.</p>
+        </div>
+        <div class="tool-card">
+          <h4>n8n</h4>
+          <p class="tool-card__role">Runs the automation</p>
+          <p>Hosts the workflow: reads the waitlist, calls Claude, waits for approval, sends texts, updates the sheet and calendar.</p>
+          <p class="tool-card__cost">Cost: free self-hosted, or a paid Cloud plan&#8311;.</p>
+        </div>
+        <div class="tool-card">
+          <h4>Claude</h4>
+          <p class="tool-card__role">Ranks candidates &amp; drafts the text</p>
+          <p>Reads up to 5 pre-scored candidates and returns the top 3 with a short, PHI-free SMS draft each, as JSON.</p>
+          <p class="tool-card__cost">Cost: a few cents per refill or less <span class="nowrap"><span class="badge-estimate badge-estimate--muted">ESTIMATE</span>&#8310;</span>.</p>
+        </div>
+        <div class="tool-card">
+          <h4>Twilio</h4>
+          <p class="tool-card__role">Sends &amp; receives the SMS</p>
+          <p>Sends staggered offer texts to the top 3 and listens for the first "YES". Also auto-handles STOP/HELP.</p>
+          <p class="tool-card__cost">Cost: &approx; $0.10 to $0.25 per refill&#8308;, plus $1.15/month per number&#8308; and A2P 10DLC fees&#8309;.</p>
+        </div>
+        <div class="tool-card">
+          <h4>Google Sheets</h4>
+          <p class="tool-card__role">Waitlist &amp; Refills log</p>
+          <p>Two tabs: Waitlist (opted-in contacts only) and Refills (every filled slot, for invoicing and reports).</p>
+          <p class="tool-card__cost">Cost: free with a Google account.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="collapsible" id="architecture-details">
+      <summary>Architecture diagram</summary>
+      <div class="diagram-wrap" role="region" aria-label="Architecture diagram" tabindex="0">
+        <pre class="ascii-diagram">Google Calendar (or booking tool webhook)
+        |  event cancelled / deleted
+        v
+n8n workflow --> Google Sheets "Waitlist" (opted-in only)
+        |
+        +--> Claude: rank candidates + draft a short, PHI-free text
+        |
+        +--> Human approval (Slack button or email link)  &lt;-- staff taps Approve
+        |
+        +--> Twilio: send offer texts (max 3, staggered)
+        |
+        +--> Twilio inbound webhook: first "YES" locks the slot
+        |
+        +--> Update calendar + log row in "Refills" sheet --> monthly Stripe invoice</pre>
+      </div>
+    </details>
+
+    <details class="collapsible" id="compliance-details">
+      <summary>Compliance checklist</summary>
+      <p class="muted"><em>Not legal advice. Confirm with a qualified attorney or compliance advisor in your state.</em></p>
+
+      <h4>SMS / TCPA</h4>
+      <ul class="check-list" id="complianceListSms" data-storage-key="booked-v3-compliance">
+        <li><label><input type="checkbox" data-id="sms-optin"><span class="ck-text"><strong>Opt-in first.</strong> Text only people who explicitly joined the waitlist by text. Store when, how and what they agreed to.</span></label></li>
+        <li><label><input type="checkbox" data-id="sms-stophelp"><span class="ck-text"><strong>STOP / HELP work every time.</strong> Twilio handles standard opt-out keywords. Mirror STOP in your sheet too.</span></label></li>
+        <li><label><input type="checkbox" data-id="sms-quiet"><span class="ck-text"><strong>Quiet hours.</strong> Send only during business hours in the recipient's local time (TCPA safe harbor is 8am to 9pm).</span></label></li>
+        <li><label><input type="checkbox" data-id="sms-freq"><span class="ck-text"><strong>Frequency.</strong> At most one offer text per person per day, per FCC healthcare guidance&#8312;.</span></label></li>
+        <li><label><input type="checkbox" data-id="sms-10dlc"><span class="ck-text"><strong>Register A2P 10DLC.</strong> US carriers require brand and campaign registration (brand $4.50 for low-volume or $46 for a full Standard brand, $15 campaign vetting, $1.50 to $10/month per campaign; approval can take up to about a week)&#8309;.</span></label></li>
+        <li><label><input type="checkbox" data-id="sms-nomarketing"><span class="ck-text"><strong>No marketing in these texts.</strong> Appointment-offer texts only. Promotions need separate, stronger consent.</span></label></li>
+      </ul>
+
+      <h4>Healthcare (dental, physio, med) / HIPAA</h4>
+      <ul class="check-list" id="complianceListHipaa" data-storage-key="booked-v3-compliance">
+        <li><label><input type="checkbox" data-id="hipaa-covered"><span class="ck-text">Dental and medical practices are usually HIPAA covered entities. Appointment reminders are allowed as treatment communications&#8313;. If you handle their schedule data, you are likely their business associate and need a Business Associate Agreement (BAA).</span></label></li>
+        <li><label><input type="checkbox" data-id="hipaa-baa"><span class="ck-text">Every tool that touches patient data must be covered by a BAA or must never receive PHI&#185;&#8304;. Don't assume your providers offer one. Check first.</span></label></li>
+        <li><label><input type="checkbox" data-id="hipaa-minimum"><span class="ck-text"><strong>Minimum necessary:</strong> texts include only the business name, day, time and duration. First names only, never a procedure.</span></label></li>
+        <li><label><input type="checkbox" data-id="hipaa-separate"><span class="ck-text">Keep the waitlist separate from clinical records, and delete data you don't need.</span></label></li>
+        <li><label><input type="checkbox" data-id="hipaa-startsafe"><span class="ck-text"><strong>If you're unsure, start with salons, gyms or med-spa consults</strong> (non-HIPAA) while you set up a compliant stack.</span></label></li>
+      </ul>
+    </details>
+
+    <details class="collapsible" id="sources-details">
+      <summary>Sources</summary>
+      <ol class="source-list">
+        <li>NoShowLine, "Dental no-show benchmarks" (industry/vendor benchmark, treat as <span class="nowrap"><span class="badge-estimate badge-estimate--muted">ESTIMATE</span>):</span> no-show rates 10 to 20%, $250 to $450 per no-show. <a href="https://noshowline.com/resources/dentists/no-show-benchmarks" target="_blank" rel="noopener noreferrer">noshowline.com/resources/dentists/no-show-benchmarks</a></li>
+        <li>Dental Economics, "How the economic impact of no-shows at a student clinic applies to dental practices". <a href="https://www.dentaleconomics.com/practice/systems/article/14294871/how-the-economic-impact-of-no-shows-at-a-student-clinic-applies-to-dental-practices" target="_blank" rel="noopener noreferrer">dentaleconomics.com/.../14294871</a></li>
+        <li>Journal of Dental Education (2016), missed appointments at a university dental clinic (58,622 appointments). <a href="https://onlinelibrary.wiley.com/doi/10.1002/j.0022-0337.2016.80.1.tb06055.x" target="_blank" rel="noopener noreferrer">onlinelibrary.wiley.com/doi/10.1002/j.0022-0337.2016.80.1.tb06055.x</a></li>
+        <li>Twilio, US SMS pricing (checked Nov 1, 2026): $0.0083 per outbound segment, carrier fees $0.0035 to $0.005, long code $1.15/month. <a href="https://www.twilio.com/en-us/sms/pricing/us" target="_blank" rel="noopener noreferrer">twilio.com/en-us/sms/pricing/us</a></li>
+        <li>Twilio, A2P 10DLC registration and fees. <a href="https://www.twilio.com/en-us/phone-numbers/a2p-10dlc" target="_blank" rel="noopener noreferrer">twilio.com/en-us/phone-numbers/a2p-10dlc</a> and <a href="https://www.twilio.com/docs/trust-hub/registrations/a2p-10dlc-brand" target="_blank" rel="noopener noreferrer">twilio.com/docs/trust-hub/registrations/a2p-10dlc-brand</a> and <a href="https://help.twilio.com/articles/9550596959643-A2P-10DLC-Sole-Proprietor-Brands-FAQ" target="_blank" rel="noopener noreferrer">help.twilio.com/.../Sole-Proprietor-Brands-FAQ</a></li>
+        <li>Anthropic, API pricing. <a href="https://www.anthropic.com/pricing" target="_blank" rel="noopener noreferrer">anthropic.com/pricing</a></li>
+        <li>n8n, pricing and Community Edition. <a href="https://n8n.io/pricing" target="_blank" rel="noopener noreferrer">n8n.io/pricing</a></li>
+        <li>HIPAA Journal, "FCC confirms rules regarding HIPAA and patient telephone calls". <a href="https://www.hipaajournal.com/fcc-confirms-rules-regarding-hipaa-and-patient-telephone-calls-8048/" target="_blank" rel="noopener noreferrer">hipaajournal.com/.../8048</a></li>
+        <li>HHS, "Are appointment reminders allowed under the HIPAA Privacy Rule without authorizations?" <a href="https://www.hhs.gov/hipaa/for-professionals/faq/286/are-appointment-reminders-allowed-under-hipaa-without-authorization/index.html" target="_blank" rel="noopener noreferrer">hhs.gov/.../faq/286</a></li>
+        <li>HIPAA Journal, "Is texting in violation of HIPAA?" <a href="https://www.hipaajournal.com/texting-violation-hipaa/" target="_blank" rel="noopener noreferrer">hipaajournal.com/texting-violation-hipaa</a></li>
+        <li>n8n Cloud Starter monthly price (&euro;24, billed monthly) per CloudZero's n8n pricing summary, checked Oct 31, 2026. n8n's own page lists &euro;20/mo billed annually. theplainstack.com and theautomatedshop.com (Oct 2026) report the same &euro;24 monthly price. <a href="https://www.cloudzero.com/blog/n8n-pricing/" target="_blank" rel="noopener noreferrer">cloudzero.com/blog/n8n-pricing</a></li>
+        <li>ECB euro reference rate, 30 Oct 2026: 1 EUR = 1.1172 USD. <a href="https://data.ecb.europa.eu/data/data-categories/ecbeurosystem-policy-and-exchange-rates/exchange-rates/reference-rates" target="_blank" rel="noopener noreferrer">data.ecb.europa.eu/.../reference-rates</a></li>
+      </ol>
+    </details>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p class="site-footer__disclaimer">Numbers in the guide are examples and estimates, not income promises. Not legal advice. Demo in the video uses a fictional clinic. AI-generated presenter.</p>
+  <p class="site-footer__copy">&copy; AI Business Ideas</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
